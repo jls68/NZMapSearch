@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="CSS/CSS.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
+  <title>New Zealand Tourist Information</title>
+</head>
+
+<body>
+  <center>
+    <h1>New Zealand Tourist Information</h1>
+  </center>
+  <div class="row">
+    <div class="column" id="mapid"></div>
+    <div class="column">
+      <center>
+        <br>
+        <p>Which town would you like to visit?:</p>
+        <input type="text" id="Search" value="New Plymouth">
+        <button type="button" onclick="search()">Submit</button>
+        <br><br>
+        <p>Recent searches:</p>
+        <p id="Recent"></p>
+      </center>
+    </div>
+  </div>
+  <div>
+    <br><br>
+    <p id="Sun"></p>
+    <br>
+    <p id="Weather"></p>
+  </div>
+</body>
+
+<script type="text/javascript" src="Javascript/javaScript.js"></script>
+
+</html>

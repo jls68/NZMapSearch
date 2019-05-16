@@ -1,0 +1,28 @@
+body {
+    font: 100% arial, sans-serif;
+    background-color: rgb(207, 167, 129);
+}
+
+input {
+    margin: 6px;
+    border-style:inset;
+    border-color: rgb(95, 137, 201);
+    border-width: 1px;
+    font: 100% arial, sans-serif;
+}
+
+.column {
+    float: left;
+    width: 50%;
+}
+  
+/* Clear floats after the columns */
+.row:after {
+   content: "";
+   display: grid;
+   clear: both;
+}
+
+#mapid { 
+    height: 600px; 
+}
