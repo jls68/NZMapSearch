@@ -65,7 +65,10 @@ function search() {
 	if (_request.readyState == 4) {
 	    if (_request.status == 200) {
 		console.log('Request Success: '+_request.responseText);
-		weather.innerText = _request.responseText;
+		let parser = new DOMParser();
+		let xmlDoc = parser.parseFromString(_request.responseText,'text/xml');
+		let main = xmlDoc.getElementsByTagName("weather")[0].childNodes[0].nodeValue;
+		weather.innerText = main;
 	    }
 	    else {
 		console.log("Request error: " + _request.status);

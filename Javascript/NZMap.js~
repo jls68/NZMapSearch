@@ -1,4 +1,4 @@
-function initialise(){
+
     var GeocodeKey = "A9cgnrHAOTLt9s90LajfqMZI15E1CbVH";
 
     var lat = -39.057994;
@@ -6,7 +6,9 @@ function initialise(){
     var sun = document.getElementById("Sun");
     var weather = document.getElementById("Weather");
     var recent = document.getElementById("Recent");
-    var mymap = L.map("mapid").setView([lat, lng], 13);
+var mymap = L.map("mapid").setView([lat, lng], 13);
+
+function initialise(){
 
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -19,18 +21,19 @@ function initialise(){
 
 function search() {
 	var location = document.getElementById("Search").value;
-	var mapReq = 'http://www.mapquestapi.com/geocoding/v1/address?key=' + GeocodeKey + '&location=' + location + ",NZ";
+	var mapReq = 'https://www.mapquestapi.com/geocoding/v1/address?key=' + GeocodeKey + '&location=' + location + ",NZ";
 	console.log(location);
 
-	fetch(mapReq)
-		.then(response => {
-			return response.json()
+    // Fetch latitude and longitude of searched town
+    fetch(mapReq)
+	.then(response => {
+		return response.json()
 		})
 		.then(data => {
 			lat = data['results'][0]['locations'][0]['latLng']['lat'];
 			lng = data['results'][0]['locations'][0]['latLng']['lng'];
 			console.log(lat + ',' + lng);
-			mymap.setView([lat, lng], 13);
+			mymap.panTo([lat, lng]);
 			recent.innerText = recent.innerText + '\n' + location;
 		})
 		.catch(err => {
@@ -38,8 +41,8 @@ function search() {
 		})
 
 	var sunReq = 'https://api.sunrise-sunset.org/json?lat=' + lat + '&lng=' + lng + '&date=today';
-	var weatherReq = 'http://www.mapquestapi.com/geocoding/v1/address?key=' + GeocodeKey + '&location=' + location + ",NZ";
 
+	// Fetch sun rise and set times
 	fetch(sunReq)
 		.then(response => {
 			return response.json()
@@ -53,16 +56,21 @@ function search() {
 			console.log('Error getting sun rise and sun set time: ' + err);
 		})
 
-	/*fetch(weatherReq)
-		.then(response => {
-			return response.json()
-		  })
-		  .then(data => {
-			weather.innerText = "Current Weather is #, outlook: # max temp: # min temp: #";
-		  })
-		  .catch(err => {
-			console.log('Error getting weather: '+err);
-		  })*/
-
-	return;
+	// Make AJAX request for weather outlook
+    var _request = new XMLHttpRequest();
+    var url = "PHP/Geocode.php?lat=" + lat  + "&lng=" + lng;	    
+    _request.open("GET", url, true);
+    console.log("Request sent to " + url);
+    _request.onreadystatechange = function(){
+	if (_request.readyState == 4) {
+	    if (_request.status == 200) {
+		console.log('Request Success: '+_request.responseText);
+		weather.innerText = _request.responseText;
+	    }
+	    else {
+		console.log("Request error: " + _request.status);
+	    }
+	}
+    };
+    _request.send();
 }
